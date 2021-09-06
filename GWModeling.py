@@ -1,4 +1,10 @@
-from Helpers.fun import fun
+#!/usr/bin/python3
 
-fun()
-print("hello world")
+
+def main():
+    print("hello world")
+    return (0)
+
+
+if __name__ == "__main__":
+    main()
