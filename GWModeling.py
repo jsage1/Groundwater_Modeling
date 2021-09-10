@@ -9,6 +9,7 @@ def main():
     x = GWGrid()
     # reading in data files from specified folders
     x.read_data("TestData/PropperSizing")
+    x.print_graph()
     return 0
 
 

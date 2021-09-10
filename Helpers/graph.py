@@ -32,9 +32,9 @@ class Node:
     def __init__(self, x, y, z):
         # initiates a node to be placed in grid
         # x y z values reprasent right, down, and foreward values respectively
-        self.x = x
-        self.y = y
-        self.z = z
+        self.x = x  # right weight follows x axis
+        self.y = y  # down weight follows y axis
+        self.z = z  # forward weight follows z axis
 
 
 class GWGrid:
@@ -100,10 +100,36 @@ class GWGrid:
 
         # TODO: BUILD GRAPH FROM NODES
         for z in range(0, self.depth):
-            templevel = []
+            temp_level = []
             for y in range(0, self.width):
-                temprow = []
+                temp_row = []
                 for x in range(0, self.length):
-                    temprow.append(Node(0, 0, 0))
-                templevel.append(temprow)
-            self.graph.append(templevel)
+                    right = 0
+                    down = 0
+                    forward = forward_weight_string[z][y][x]
+                    if x != self.length - 1:  # cant get right val
+                        right = right_weight_string[z][y][x]
+                    if y != self.width - 1:  # cant get down val
+                        down = down_weight_string[z][y][x]
+                    temp_row.append(Node(right, down, forward))
+                temp_level.append(temp_row)
+            self.graph.append(temp_level)
+        print("Graph creation sucessful!")
+
+    def print_graph(self):
+        cstr = "Printing graph"
+        counter = 0
+        print(cstr.center(40, '#'))
+        for level in self.graph:
+            cstr = "Printing Level: " + str(counter)
+            print(cstr.center(40, '-'))
+            print("Right weights:")
+            print('\n'.join([''.join(['{:4}'.format(item.x) for item in row])
+                             for row in level]))
+            print("Down weights:")
+            print('\n'.join([''.join(['{:4}'.format(item.y) for item in row])
+                             for row in level]))
+            print("Forward weights:")
+            print('\n'.join([''.join(['{:4}'.format(item.z) for item in row])
+                             for row in level]))
+            counter = counter + 1
