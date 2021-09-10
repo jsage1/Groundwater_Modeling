@@ -16,7 +16,7 @@ def open_side(depth, direction, path):
     weights = []
     for layer in range(0, depth + 1):
         print("Opening file: " + str(direction) + str(layer) + ".txt")
-        file = path + "\\" + str(direction) + str(layer) + ".txt"
+        file = path + "/" + str(direction) + str(layer) + ".txt"
         f = open(file)
         temp_weights = []
         for line in f:
