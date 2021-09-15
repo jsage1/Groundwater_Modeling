@@ -104,8 +104,8 @@ class GWGrid:
             for y in range(0, self.width):
                 temp_row = []
                 for x in range(0, self.length):
-                    right = 0
-                    down = 0
+                    right = None
+                    down = None
                     forward = forward_weight_string[z][y][x]
                     if x != self.length - 1:  # cant get right val
                         right = right_weight_string[z][y][x]
@@ -114,7 +114,7 @@ class GWGrid:
                     temp_row.append(Node(right, down, forward))
                 temp_level.append(temp_row)
             self.graph.append(temp_level)
-        print("Graph creation sucessful!")
+        print("Graph creation successful!")
 
     def print_graph(self):
         cstr = "Printing graph"
@@ -124,11 +124,21 @@ class GWGrid:
             cstr = "Printing Level: " + str(counter)
             print(cstr.center(40, '-'))
             print("Right weights:")
-            print('\n'.join([''.join(['{:4}'.format(item.x) for item in row])
-                             for row in level]))
+            out_str = ""
+            for row in level:
+                for item in row:
+                    if item.x is not None:
+                        out_str = out_str + '{:4}'.format(item.x)
+                out_str = out_str + '\n'
+            print(out_str)
             print("Down weights:")
-            print('\n'.join([''.join(['{:4}'.format(item.y) for item in row])
-                             for row in level]))
+            out_str = ""
+            for row in level:
+                for item in row:
+                    if item.y is not None:
+                        out_str = out_str + '{:4}'.format(item.y)
+                out_str = out_str + '\n'
+            print(out_str)
             print("Forward weights:")
             print('\n'.join([''.join(['{:4}'.format(item.z) for item in row])
                              for row in level]))
