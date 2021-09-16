@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from Helpers.graph import GWGrid
+from Helpers.GWGrid import GWGrid
 
 # OPTION: set up path to files to bo be passed as cmd args
 

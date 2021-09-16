@@ -29,9 +29,10 @@ def open_side(depth, direction, path):
 
 
 class Node:
-    def __init__(self, x, y, z):
+    def __init__(self, x, y, z, name):
         # initiates a node to be placed in grid
         # x y z values reprasent right, down, and foreward values respectively
+        self.name = name
         self.x = x  # right weight follows x axis
         self.y = y  # down weight follows y axis
         self.z = z  # forward weight follows z axis
@@ -42,7 +43,7 @@ class GWGrid:
         # initiating empty graph prior to insertion
         # this graph should contain a 3d array of Nodes representing
         # water flow from a section of a 3d plot of land
-        self.graph = []
+        self.GWGraph = []
         # read in the
         self.depth = 0
         self.length = 0
@@ -98,7 +99,6 @@ class GWGrid:
         print("Creating 3d array with " + str(self.depth) + " Layers with dimensions: " +
               str(self.width) + " width, " + str(self.length) + " length.")
 
-        # TODO: BUILD GRAPH FROM NODES
         for z in range(0, self.depth):
             temp_level = []
             for y in range(0, self.width):
@@ -111,16 +111,16 @@ class GWGrid:
                         right = right_weight_string[z][y][x]
                     if y != self.width - 1:  # cant get down val
                         down = down_weight_string[z][y][x]
-                    temp_row.append(Node(right, down, forward))
+                    temp_row.append(Node(right, down, forward, 0))
                 temp_level.append(temp_row)
-            self.graph.append(temp_level)
+            self.GWGraph.append(temp_level)
         print("Graph creation successful!")
 
     def print_graph(self):
-        cstr = "Printing graph"
+        cstr = "Printing GWGraph"
         counter = 0
         print(cstr.center(40, '#'))
-        for level in self.graph:
+        for level in self.GWGraph:
             cstr = "Printing Level: " + str(counter)
             print(cstr.center(40, '-'))
             print("Right weights:")
