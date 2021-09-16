@@ -10,6 +10,9 @@ def main():
     # reading in data files from specified folders
     x.read_data("TestData/original")
     x.print_graph()
+    x.create_adjlist()
+    x.print_adjlist()
+    x.topsort()
     return 0
 
 

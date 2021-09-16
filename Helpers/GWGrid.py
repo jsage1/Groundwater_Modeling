@@ -1,5 +1,5 @@
 from os import listdir
-
+from Helpers.ADJlist import Edge, ADJlist
 
 # getdepth: parses all files and returns the highest depth value of text files
 def get_depth(files):
@@ -44,10 +44,15 @@ class GWGrid:
         # this graph should contain a 3d array of Nodes representing
         # water flow from a section of a 3d plot of land
         self.GWGraph = []
+
+        # object for adjlist
+        self.adjlist = None
+
         # read in the
         self.depth = 0
         self.length = 0
         self.width = 0
+        self.totalNodes = 0
 
     # readdata: takes in path to files
     # expects
@@ -111,15 +116,30 @@ class GWGrid:
                         right = right_weight_string[z][y][x]
                     if y != self.width - 1:  # cant get down val
                         down = down_weight_string[z][y][x]
-                    temp_row.append(Node(right, down, forward, 0))
+                    temp_row.append(Node(right, down, forward, self.totalNodes))
+                    self.totalNodes += 1
                 temp_level.append(temp_row)
             self.GWGraph.append(temp_level)
+
+        # appending empty row at bottom
+        temp_level = []
+        for y in range(0, self.width):
+            temp_row = []
+            for x in range(0, self.length):
+                right = None
+                down = None
+                forward = None
+                temp_row.append(Node(right, down, forward, self.totalNodes))
+                self.totalNodes += 1
+            temp_level.append(temp_row)
+        self.GWGraph.append(temp_level)
         print("Graph creation successful!")
 
     def print_graph(self):
         cstr = "Printing GWGraph"
         counter = 0
         print(cstr.center(40, '#'))
+        print("Total Edges: " + str(self.totalNodes))
         for level in self.GWGraph:
             cstr = "Printing Level: " + str(counter)
             print(cstr.center(40, '-'))
@@ -129,6 +149,8 @@ class GWGrid:
                 for item in row:
                     if item.x is not None:
                         out_str = out_str + '{:4}'.format(item.x)
+                    else:
+                        out_str = out_str + f'{"N" : >4}'
                 out_str = out_str + '\n'
             print(out_str)
             print("Down weights:")
@@ -137,9 +159,47 @@ class GWGrid:
                 for item in row:
                     if item.y is not None:
                         out_str = out_str + '{:4}'.format(item.y)
+                    else:
+                        out_str = out_str + f'{"N" : >4}'
                 out_str = out_str + '\n'
             print(out_str)
             print("Forward weights:")
-            print('\n'.join([''.join(['{:4}'.format(item.z) for item in row])
-                             for row in level]))
+            out_str = ""
+            for row in level:
+                for item in row:
+                    if item.z is not None:
+                        out_str = out_str + '{:4}'.format(item.z)
+                    else:
+                        out_str = out_str + f'{"N" : >4}'
+                out_str = out_str + '\n'
+            print(out_str)
             counter = counter + 1
+
+    def create_adjlist(self):
+        edges = []
+        for level in range(len(self.GWGraph)):
+            for row in range(len(self.GWGraph[level])):
+                for item in range(len(self.GWGraph[level][row])):
+                    if self.GWGraph[level][row][item].x is not None:
+                        edges.append(Edge(self.GWGraph[level][row][item].name,
+                                          self.GWGraph[level][row][item+1].name,
+                                          self.GWGraph[level][row][item].x))
+                    if self.GWGraph[level][row][item].y is not None:
+                        edges.append(Edge(self.GWGraph[level][row][item].name,
+                                          self.GWGraph[level][row+1][item].name,
+                                          self.GWGraph[level][row][item].y))
+                    if self.GWGraph[level][row][item].z is not None:
+                        edges.append(Edge(self.GWGraph[level][row][item].name,
+                                          self.GWGraph[level+1][row][item].name,
+                                          self.GWGraph[level][row][item].z))
+        self.adjlist = ADJlist(self.totalNodes, edges)
+
+    def print_adjlist(self):
+        cstr = "Printing ADJlist"
+        print(cstr.center(40, '#'))
+        self.adjlist.print_adjlist()
+
+    def topsort(self):
+        cstr = "Printing Topological sort"
+        print(cstr.center(40, '#'))
+        self.adjlist.topological_sort()
