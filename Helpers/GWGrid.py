@@ -198,8 +198,10 @@ class GWGrid:
         cstr = "Printing ADJlist"
         print(cstr.center(40, '#'))
         self.adjlist.print_adjlist()
+        print()
 
     def topsort(self):
-        cstr = "Printing Topological sort"
+        cstr = "Printing Topological Sort"
         print(cstr.center(40, '#'))
         self.adjlist.topological_sort()
+        print()

@@ -1,1 +1,3 @@
-flopy==3.3.4
+flopy
+numpy
+matplotlib
