@@ -1,18 +1,17 @@
 #!/usr/bin/python3
 from Helpers.GWGrid import GWGrid
 
-# OPTION: set up path to files to bo be passed as cmd args
-
-
 def main():
     # initialize class for graph
     x = GWGrid()
     # reading in data files from specified folders
-    x.read_data("TestData/original")
+    x.read_data_bin("TestData/binfiles/Test01", "Test01")
+    #x.read_data("TestData/txtfiles/original")
     x.print_graph()
-    x.create_adjlist()
+    x.create_adjlist2()
     x.print_adjlist()
     x.topsort()
+
     return 0
 
 

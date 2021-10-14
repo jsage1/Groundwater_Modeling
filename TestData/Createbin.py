@@ -6,9 +6,9 @@ Lx = 1000.
 Ly = 1000.
 ztop = 10.
 zbot = -50.
-nlay = 4
-nrow = 10
-ncol = 10
+nlay = 5
+nrow = 5
+ncol = 5
 delr = Lx / ncol
 delc = Ly / nrow
 delv = (ztop - zbot) / nlay
@@ -44,7 +44,7 @@ lpf = flopy.modflow.ModflowLpf(mf, hk=hk, vka=vka, sy=sy, ss=ss, laytyp=laytyp,
 pcg = flopy.modflow.ModflowPcg(mf)
 
 # Make list for stress period 1
-stageleft = 10.
+stageleft = 5.
 stageright = 0. #10.
 bound_sp1 = []
 for il in range(nlay):
