@@ -17,7 +17,9 @@ hk = 1.
 vka = 1.
 sy = 0.1
 ss = 1.e-4
-laytyp = 0#1:unconfined 0:confined
+# 1:unconfined 0:confined
+laytyp = 0
+
 
 # Variables for the BAS package
 # Note that changes from the previous tutorial!
@@ -31,9 +33,9 @@ nstp = [1, 100, 100]
 steady = [True, False, False]
 
 # Flopy objects
-modelname = 'Test01'
-#mf = flopy.modflow.Modflow(modelname, exe_name="mf2005", model_ws="output/")#exe_name= path_to_executable
-mf = flopy.modflow.Modflow(modelname, exe_name='mf2005', model_ws="binfiles/Test01/")
+modelname = 'Test00'
+# mf = flopy.modflow.Modflow(modelname, exe_name="mf2005", model_ws="output/")#exe_name= path_to_executable
+mf = flopy.modflow.Modflow(modelname, exe_name='mf2005', model_ws="binfiles/Test00/")
 dis = flopy.modflow.ModflowDis(mf, nlay, nrow, ncol, delr=delr, delc=delc,
                                top=ztop, botm=botm[1:],
                                nper=nper, perlen=perlen, nstp=nstp,
@@ -45,7 +47,8 @@ pcg = flopy.modflow.ModflowPcg(mf)
 
 # Make list for stress period 1
 stageleft = 5.
-stageright = 0. #10.
+stageright = 0.
+# 10.
 bound_sp1 = []
 for il in range(nlay):
     condleft = hk * (stageleft - zbot) * delc
@@ -77,7 +80,7 @@ ghb = flopy.modflow.ModflowGhb(mf, stress_period_data=stress_period_data)
 
 # Create the well package
 # Remember to use zero-based layer, row, column indices!
-#pumping_rate = -500.
+# pumping_rate = -500.
 pumping_rate = 0.
 wel_sp1 = [[0, nrow/2 - 1, ncol/2 - 1, 0.]]
 wel_sp2 = [[0, nrow/2 - 1, ncol/2 - 1, 0.]]
@@ -104,4 +107,3 @@ mf.write_input()
 success, mfoutput = mf.run_model(silent=True, pause=False)
 if not success:
     raise Exception('MODFLOW did not terminate normally.')
-
