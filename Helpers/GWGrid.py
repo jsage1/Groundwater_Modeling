@@ -207,10 +207,7 @@ class GWGrid:
         print()
 
     def topsort(self):
-        cstr = "Printing Topological Sort"
-        print(cstr.center(40, '#'))
         self.topsortList = self.adjlist.topological_sort()
-        print()
 
     # binary data operations
     def read_data_bin(self, directory, modelname):
@@ -313,3 +310,19 @@ class GWGrid:
                 lines.append(' '.join(output_formatting(val.node_frac_through) for val in row))
             print('\n'.join(lines))
             counter = counter + 1
+
+    def print_top_sort(self):
+        cstr = "Printing Topological Sort"
+        print(cstr.center(40, '#'))
+        for i in reversed(range(self.totalNodes)):
+            print(self.topsortList[i], end=" ")
+        print("\n")
+
+    def print_upstream(self, target):
+        visited = self.adjlist.upstream_target(target)
+        cstr = "Printing upstream from target node"
+        print(cstr.center(40, '#'))
+        for i in range(len(visited)):
+            if visited[i]:
+                print(i, end=" ")
+        print("\n")
